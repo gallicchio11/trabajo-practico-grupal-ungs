@@ -52,4 +52,50 @@ def deleteFavourite(request):
 
 @login_required
 def exit(request):
-    pass
+    logout(request)
+    return redirect("/")
+ 
+#vista que redirige a el archivo register.html
+def register(request):
+    return render(request, 'registration/register.html')  # Ajusta el nombre de la plantilla
+
+from django.contrib import messages
+from django.contrib.auth.models import User
+
+def register(request):
+    # el si la reques es POST recibe las variables del fomulario register
+    if request.method == 'POST':
+        name = request.POST['name']
+        lastname = request.POST['lastname']
+        username = request.POST['username']
+        email = request.POST['mail']
+        password = request.POST['password']
+
+        # verifico por terminal
+        print("Datos recibidos:", name, lastname, username, email, password)
+        
+        # validaar si no se repiten los datos
+        if User.objects.filter(username=username).exists():
+            messages.error(request, 'El nombre de usuario ya está en uso.')
+            return redirect('register')
+        if User.objects.filter(email=email).exists():
+            messages.error(request, 'El correo ya está registrado.')
+            return redirect('register')
+        
+        # instancio un usuario con los datos del registro
+        user = User.objects.create_user(
+            first_name=name,
+            last_name=lastname,
+            username=username,
+            email=email,
+            password=password
+        )
+        #guardo el nuevo usuario registRado
+        user.save()
+        
+        #mensaje de registro  exitoso 
+        messages.success(request, 'Registro exitoso')
+    
+    #por defecto redirije a register devuelta
+    return render(request, 'registration/register.html')
+

@@ -1,0 +1,35 @@
+{% extends 'header.html' %} {% block content %}
+<!-- formulario para el registro del usuario -->
+
+<div class="sign_up-form" style="text-align: center;">
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <p style="color: red">{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+    <form action="" method="POST" action="{% url 'register' %}" style="display: inline-block;">
+        {% csrf_token %}
+        <h2 class="text-center">Registrate</h2>
+        <div class="form-group" style="margin-bottom: 5%;">
+            <input type="text" name="name" id="username" class="form-control" placeholder="Nombre" required="required">
+        </div>
+        <div class="form-group" style="margin-bottom: 5%;">
+            <input type="text" name="lastname" id="lastname" class="form-control" placeholder="Apellido" required="required">
+        </div>
+        <div class="form-group" style="margin-bottom: 5%;">
+            <input type="text" name="username" id="username" class="form-control" placeholder="Usuario" required="required">
+        </div>
+        <div class="form-group" style="margin-bottom: 5%;">
+            <input type="text" name="mail" id="mail" class="form-control" placeholder="Correo electronico" required="required">
+        </div>
+        <div class="form-group" style="margin-bottom: 5%;">
+            <input type="password" name="password" id="password" class="form-control" placeholder="Contraseña" required="required">
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block">Enviar</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
