@@ -1,4 +1,6 @@
-{% extends 'header.html' %} {% block content %}
+{% extends 'header.html' %}
+
+{% block content %}
 <div class="container-xl">
     <div class="table-responsive">
         <div class="table-wrapper">
@@ -14,17 +16,17 @@
                     <tr>
                         <th>#</th>
                         <th>Imagen</th>
-                        <th>Nombre <i class="fa fa-sort"></i></th>
+                        <th>Nombre</th>
                         <th>Status</th>
-                        <th>Última ubicación <i class="fa fa-sort"></i></th>
-                        <th>Episodio inicial </th>
-                        <th>Acciones </th>
+                        <th>Última ubicación</th>
+                        <th>Episodio inicial</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for favourite in favourite_list %}
                     <tr>
-                        <td>-</td>
+                        <td>{{ forloop.counter }}</td>
                         <td><img src="{{ favourite.url }}" alt="" style="max-width: 200px; max-height: 200px;"></td>
                         <td>{{ favourite.name }}</td>
                         <td>{{ favourite.status }}</td>
@@ -38,6 +40,10 @@
                             </form>
                         </td>
                     </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="7">No tienes favoritos guardados.</td>
+                        </tr>
                     {% endfor %}
                 </tbody>
             </table>
@@ -45,3 +51,8 @@
     </div>
 </div>
 {% endblock %}
+<form method="POST" action="{% url 'borrar-favorito' %}">
+    {% csrf_token %}
+    <input type="hidden" name="id" value="{{ favourite.id }}">
+    <button type="submit" class="btn" style="color:red"><i class="material-icons">&#xE872;</i></button>
+</form>
